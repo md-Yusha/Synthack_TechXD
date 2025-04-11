@@ -117,6 +117,7 @@ interface AuroraProps {
   blend?: number;
   speed?: number;
   time?: number;
+  visible?: boolean;
 }
 
 export default function Aurora(props: AuroraProps) {
@@ -124,7 +125,8 @@ export default function Aurora(props: AuroraProps) {
     colorStops = ["#3A29FF", "#FF94B4", "#FF3232"],
     amplitude = 1.0,
     blend = 0.5,
-    speed = 0.5
+    speed = 0.5,
+    visible = true
   } = props;
   const propsRef = useRef(props);
   propsRef.current = props;
@@ -132,6 +134,8 @@ export default function Aurora(props: AuroraProps) {
   const ctnDom = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!visible) return;
+    
     console.log('Aurora effect initializing...');
     const ctn = ctnDom.current;
     if (!ctn) {
@@ -216,7 +220,9 @@ export default function Aurora(props: AuroraProps) {
       }
       gl.getExtension("WEBGL_lose_context")?.loseContext();
     };
-  }, [amplitude, blend, colorStops, speed]);
+  }, [amplitude, blend, colorStops, speed, visible]);
+
+  if (!visible) return null;
 
   return <div ref={ctnDom} className="aurora-container" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: -1 }} />;
 } 

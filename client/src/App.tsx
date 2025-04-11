@@ -1,5 +1,5 @@
 import { ConnectButton } from "thirdweb/react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { client } from "./client";
 import {
   ArrowDownIcon,
@@ -7,21 +7,43 @@ import {
   ShieldCheckIcon,
   RocketLaunchIcon,
 } from "@heroicons/react/24/outline";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Aurora from "./components/Aurora";
+import FeatureCard from "./components/FeatureCard";
 
 export function App() {
+  const [showAurora, setShowAurora] = useState(true);
+  const { scrollY } = useScroll();
+  const opacity = useTransform(scrollY, [0, window.innerHeight * 0.5], [1, 0]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const heroSection = document.getElementById("hero");
+      if (heroSection) {
+        const rect = heroSection.getBoundingClientRect();
+        const isVisible =
+          rect.top >= -window.innerHeight * 0.5 &&
+          rect.bottom <= window.innerHeight * 1.5;
+        setShowAurora(isVisible);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden relative">
       {/* Aurora Background */}
-      <div className="fixed inset-0 z-0">
+      <motion.div className="fixed inset-0 z-0" style={{ opacity }}>
         <Aurora
           colorStops={["#3A29FF", "#FF94B4", "#FF3232"]}
           blend={0.5}
           amplitude={1.0}
           speed={0.5}
+          visible={showAurora}
         />
-      </div>
+      </motion.div>
 
       {/* Navigation Bar */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-black/40 backdrop-blur-xl border-b border-purple-500/20 shadow-lg">
@@ -74,7 +96,10 @@ export function App() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center px-4 pt-24">
+      <section
+        id="hero"
+        className="relative min-h-screen flex flex-col items-center justify-center px-4 pt-24"
+      >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -155,51 +180,6 @@ export function App() {
           </motion.div>
         </div>
       </section>
-
-      {/* Integration Section */}
-      <section id="partners" className="relative py-32 px-4 overflow-hidden">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-4xl mx-auto text-center"
-        >
-          <h2 className="text-sm tracking-[0.2em] text-purple-500 mb-12">
-            TRUSTED BY INDUSTRY LEADERS
-          </h2>
-          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-12 items-center justify-items-center opacity-70">
-            <div className="h-12 w-32 bg-purple-500/5 rounded-none border border-purple-500/20 hover:border-purple-500 transition-all duration-300"></div>
-            <div className="h-12 w-32 bg-purple-500/5 rounded-none border border-purple-500/20 hover:border-purple-500 transition-all duration-300"></div>
-            <div className="h-12 w-32 bg-purple-500/5 rounded-none border border-purple-500/20 hover:border-purple-500 transition-all duration-300"></div>
-            <div className="h-12 w-32 bg-purple-500/5 rounded-none border border-purple-500/20 hover:border-purple-500 transition-all duration-300"></div>
-          </div>
-        </motion.div>
-      </section>
     </div>
-  );
-}
-
-interface FeatureCardProps {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}
-
-function FeatureCard({ icon, title, description }: FeatureCardProps) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      viewport={{ once: true }}
-      whileHover={{ scale: 1.02 }}
-      className="p-8 rounded-none border border-purple-500/20 hover:border-purple-500 transition-all duration-300 bg-purple-500/5"
-    >
-      <div className="mb-6">{icon}</div>
-      <h3 className="text-lg font-light tracking-[0.2em] mb-4 text-purple-500">
-        {title}
-      </h3>
-      <p className="text-gray-400 leading-relaxed font-light">{description}</p>
-    </motion.div>
   );
 }
