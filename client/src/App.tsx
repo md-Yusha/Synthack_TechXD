@@ -135,9 +135,6 @@ export function App() {
 								}}
 							/>
 						)}
-						<button className="button-secondary">
-							EXPLORE
-						</button>
 					</motion.div>
 				</motion.div>
 
