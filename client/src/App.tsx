@@ -2,16 +2,16 @@ import { ConnectButton, useActiveAccount } from "thirdweb/react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { client } from "./client";
 import {
-  ArrowDownIcon,
-  SparklesIcon,
-  ShieldCheckIcon,
-  RocketLaunchIcon,
+	ArrowDownIcon,
+	SparklesIcon,
+	ShieldCheckIcon,
+	RocketLaunchIcon,
 } from "@heroicons/react/24/outline";
 import React, { useState, useEffect } from "react";
 import Aurora from "./components/Aurora";
-import FeatureCard from "./components/FeatureCard";
 import Squares from "./components/Squares";
 import Orb from "./components/Orb";
+import DecryptedText from "./components/DecryptedText";
 
 export function App() {
 	const [showAurora, setShowAurora] = useState(true);
@@ -169,22 +169,51 @@ export function App() {
 						<FeatureCard
 							icon={<SparklesIcon className="h-12 w-12 text-purple-500" />}
 							title="ACADEMIC PASSPORT"
-							description="A secure digital wallet for students to store and manage their academic credentials with complete control and portability."
+							description={
+								<DecryptedText
+									text="A secure digital wallet for students to store and manage their academic credentials with complete control and portability."
+									animateOn="view"
+									revealDirection="center"
+									className="text-gray-400"
+									encryptedClassName="text-gray-600"
+									speed={30}
+									maxIterations={8}
+								/>
+							}
 						/>
 						<FeatureCard
 							icon={<ShieldCheckIcon className="h-12 w-12 text-purple-500" />}
 							title="TAMPER-PROOF SECURITY"
-							description="Blockchain-powered verification with cryptographic signatures ensuring 100% credential authenticity and integrity."
+							description={
+								<DecryptedText
+									text="Blockchain-powered verification with cryptographic signatures ensuring 100% credential authenticity and integrity."
+									animateOn="view"
+									revealDirection="center"
+									className="text-gray-400"
+									encryptedClassName="text-gray-600"
+									speed={30}
+									maxIterations={8}
+								/>
+							}
 						/>
 						<FeatureCard
 							icon={<RocketLaunchIcon className="h-12 w-12 text-purple-500" />}
 							title="INSTANT VERIFICATION"
-							description="Reduce verification time by 89% with our 24/7 automated credential verification system."
+							description={
+								<DecryptedText
+									text="Reduce verification time by 89% with our 24/7 automated credential verification system."
+									animateOn="view"
+									revealDirection="center"
+									className="text-gray-400"
+									encryptedClassName="text-gray-600"
+									speed={30}
+									maxIterations={8}
+								/>
+							}
 						/>
 					</motion.div>
 				</div>
 			</section>
-
 			{/* About Section */}
 			<section id="about" className="relative py-32 px-4 overflow-hidden">
 				<motion.div 
@@ -282,6 +311,12 @@ interface TeamMemberProps {
 	image: string;
 }
 
+interface FeatureCardProps {
+	icon: React.ReactNode;
+	title: string;
+	description: React.ReactNode;
+}
+
 function TeamMember({ position, name, image }: TeamMemberProps) {
 	const positionClasses = {
 		top: 'top-0 left-1/2 -translate-x-1/2 -translate-y-1/2',
@@ -312,6 +347,23 @@ function TeamMember({ position, name, image }: TeamMemberProps) {
 					{name}
 				</span>
 			</div>
+		</motion.div>
+	);
+}
+
+function FeatureCard({ icon, title, description }: FeatureCardProps) {
+	return (
+		<motion.div
+			initial={{ opacity: 0, y: 20 }}
+			whileInView={{ opacity: 1, y: 0 }}
+			transition={{ duration: 0.8 }}
+			viewport={{ once: true }}
+			whileHover={{ scale: 1.02 }}
+			className="p-8 rounded-none border border-purple-500/20 hover:border-purple-500 transition-all duration-300 bg-purple-500/5"
+		>
+			<div className="mb-6">{icon}</div>
+			<h3 className="text-lg font-light tracking-[0.2em] mb-4 text-purple-500">{title}</h3>
+			<div className="leading-relaxed font-light">{description}</div>
 		</motion.div>
 	);
 }
