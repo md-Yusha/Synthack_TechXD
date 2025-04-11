@@ -6,6 +6,7 @@ import React, { useState, useEffect } from "react";
 import Aurora from "./components/Aurora";
 import Squares from "./components/Squares";
 import Orb from "./components/Orb";
+import DecryptedText from "./components/DecryptedText";
 
 export function App() {
 	const [showAurora, setShowAurora] = useState(true);
@@ -161,22 +162,51 @@ export function App() {
 						<FeatureCard
 							icon={<SparklesIcon className="h-12 w-12 text-purple-500" />}
 							title="ACADEMIC PASSPORT"
-							description="A secure digital wallet for students to store and manage their academic credentials with complete control and portability."
+							description={
+								<DecryptedText
+									text="A secure digital wallet for students to store and manage their academic credentials with complete control and portability."
+									animateOn="view"
+									revealDirection="center"
+									className="text-gray-400"
+									encryptedClassName="text-gray-600"
+									speed={30}
+									maxIterations={8}
+								/>
+							}
 						/>
 						<FeatureCard
 							icon={<ShieldCheckIcon className="h-12 w-12 text-purple-500" />}
 							title="TAMPER-PROOF SECURITY"
-							description="Blockchain-powered verification with cryptographic signatures ensuring 100% credential authenticity and integrity."
+							description={
+								<DecryptedText
+									text="Blockchain-powered verification with cryptographic signatures ensuring 100% credential authenticity and integrity."
+									animateOn="view"
+									revealDirection="center"
+									className="text-gray-400"
+									encryptedClassName="text-gray-600"
+									speed={30}
+									maxIterations={8}
+								/>
+							}
 						/>
 						<FeatureCard
 							icon={<RocketLaunchIcon className="h-12 w-12 text-purple-500" />}
 							title="INSTANT VERIFICATION"
-							description="Reduce verification time by 89% with our 24/7 automated credential verification system."
+							description={
+								<DecryptedText
+									text="Reduce verification time by 89% with our 24/7 automated credential verification system."
+									animateOn="view"
+									revealDirection="center"
+									className="text-gray-400"
+									encryptedClassName="text-gray-600"
+									speed={30}
+									maxIterations={8}
+								/>
+							}
 						/>
 					</motion.div>
 				</div>
 			</section>
-
 			{/* About Section */}
 			<section id="about" className="relative py-32 px-4 overflow-hidden">
 				<motion.div 
@@ -348,7 +378,7 @@ export function App() {
 interface FeatureCardProps {
 	icon: React.ReactNode;
 	title: string;
-	description: string;
+	description: React.ReactNode;
 }
 
 function FeatureCard({ icon, title, description }: FeatureCardProps) {
@@ -363,7 +393,7 @@ function FeatureCard({ icon, title, description }: FeatureCardProps) {
 		>
 			<div className="mb-6">{icon}</div>
 			<h3 className="text-lg font-light tracking-[0.2em] mb-4 text-purple-500">{title}</h3>
-			<p className="text-gray-400 leading-relaxed font-light">{description}</p>
+			<p className="leading-relaxed font-light">{description}</p>
 		</motion.div>
 	);
 }
