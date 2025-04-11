@@ -1,22 +1,48 @@
 import { ConnectButton } from "thirdweb/react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { client } from "./client";
 import { ArrowDownIcon, SparklesIcon, ShieldCheckIcon, RocketLaunchIcon } from "@heroicons/react/24/outline";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Aurora from "./components/Aurora";
 
 export function App() {
+	const [showAurora, setShowAurora] = useState(true);
+	const { scrollY } = useScroll();
+	const opacity = useTransform(
+		scrollY,
+		[0, window.innerHeight * 0.5],
+		[1, 0]
+	);
+
+	useEffect(() => {
+		const handleScroll = () => {
+			const heroSection = document.getElementById('hero');
+			if (heroSection) {
+				const rect = heroSection.getBoundingClientRect();
+				const isVisible = rect.top >= -window.innerHeight * 0.5 && rect.bottom <= window.innerHeight * 1.5;
+				setShowAurora(isVisible);
+			}
+		};
+
+		window.addEventListener('scroll', handleScroll);
+		return () => window.removeEventListener('scroll', handleScroll);
+	}, []);
+
 	return (
 		<div className="min-h-screen bg-black text-white overflow-hidden relative">
 			{/* Aurora Background */}
-			<div className="fixed inset-0 z-0">
+			<motion.div 
+				className="fixed inset-0 z-0"
+				style={{ opacity }}
+			>
 				<Aurora
 					colorStops={["#3A29FF", "#FF94B4", "#FF3232"]}
 					blend={0.5}
 					amplitude={1.0}
 					speed={0.5}
+					visible={showAurora}
 				/>
-			</div>
+			</motion.div>
 
 			{/* Navigation Bar */}
 			<nav className="fixed top-0 left-0 right-0 z-50 bg-black/50 backdrop-blur-md border-b border-purple-500/20">
@@ -44,7 +70,7 @@ export function App() {
 			</nav>
 
 			{/* Hero Section */}
-			<section className="relative min-h-screen flex flex-col items-center justify-center px-4 pt-24">
+			<section id="hero" className="relative min-h-screen flex flex-col items-center justify-center px-4 pt-24">
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
