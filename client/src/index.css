@@ -201,12 +201,26 @@ h1, h2, h3, .heading-font {
   }
 }
 
+@keyframes gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
 .float {
   animation: float 6s ease-in-out infinite;
 }
 
 .pulse {
   animation: pulse 2s infinite;
+}
+
+.animate-gradient {
+  background-size: 200% auto;
+  animation: gradient 3s linear infinite;
 }
 
 /* Responsive text */

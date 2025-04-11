@@ -7,6 +7,7 @@ import Aurora from "./components/Aurora";
 import Squares from "./components/Squares";
 import Orb from "./components/Orb";
 import DecryptedText from "./components/DecryptedText";
+import GradientText from "./components/GradientText";
 
 export function App() {
 	const [showAurora, setShowAurora] = useState(true);
@@ -79,7 +80,7 @@ export function App() {
 								<a href="#partners" className="nav-link text-base">PARTNERS</a>
 							</div>
 						</div>
-						<div className="w-[250px] flex justify-end">
+						<div className="w-[250px] flex justify-end pr-4">
 							{account && (
 								<ConnectButton
 									client={client}
@@ -108,9 +109,9 @@ export function App() {
 						transition={{ duration: 0.8, delay: 0.2 }}
 						className="text-6xl md:text-8xl font-light mb-6 leading-tight tracking-tight"
 					>
-						PURE INNOVATION
+						PURE <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#3A29FF] via-[#FF94B4] to-[#FF3232] animate-gradient">INNOVATION</span>
 						<br />
-						<span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600">NEW GENERATION</span>
+						<span className="text-transparent bg-clip-text bg-gradient-to-br from-[#3A29FF] via-[#FF94B4] to-[#FF3232] animate-gradient">NEW</span> GENERATION
 					</motion.h1>
 					<motion.p 
 						initial={{ opacity: 0, y: 20 }}
@@ -124,7 +125,7 @@ export function App() {
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.8, delay: 0.6 }}
-						className="flex flex-wrap gap-6 justify-center"
+						className="flex flex-wrap gap-6 justify-center pr-4"
 					>
 						{!account && (
 							<ConnectButton
